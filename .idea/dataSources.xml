@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="umc@instagram.cibpoowmrvlm.ap-northeast-2.rds.amazonaws.com" uuid="1d026998-378d-4709-a042-1afdb1914aca">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://instagram.cibpoowmrvlm.ap-northeast-2.rds.amazonaws.com:3306/umc</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <time-zone>Asia/Seoul</time-zone>
+    </data-source>
+  </component>
+</project>
