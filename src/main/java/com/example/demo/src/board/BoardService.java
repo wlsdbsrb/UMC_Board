@@ -5,6 +5,7 @@ import com.example.demo.src.board.model.DeleteBoardReq;
 import com.example.demo.src.board.model.PatchBoardReq;
 import com.example.demo.src.board.model.PostBoardReq;
 import com.example.demo.src.board.model.PostBoardRes;
+import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,20 @@ public class BoardService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final BoardDao boardDao;
+    private final JwtService jwtService;
 
     @Autowired
-    public BoardService(BoardDao boardDao) {
+    public BoardService(BoardDao boardDao, JwtService jwtService) {
         this.boardDao = boardDao;
+        this.jwtService= jwtService;
 
     }
 
     public PostBoardRes createBoard(PostBoardReq postBoardReq) throws BaseException{
         try {
             int boardIdx = boardDao.creatBoard(postBoardReq);
-            return new PostBoardRes(boardIdx);
+            String jwt = jwtService.boardCreateJwt(boardIdx);
+            return new PostBoardRes(boardIdx,jwt);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

@@ -98,6 +98,12 @@ public class BoardController {
     public BaseResponse<String> modifyContent(@PathVariable int boardIdx, @RequestBody GetBoardRes getBoardRes){
         try {
 
+            int boardIdxByJwt = jwtService.getBoardIdx();
+
+            if(boardIdx != boardIdxByJwt){
+                return new BaseResponse<>(INVALID_BOARD_JWT);
+            }
+
             PatchBoardReq patchBoardReq= new PatchBoardReq(boardIdx,getBoardRes.getContent());
             boardService.modifyContent(patchBoardReq);
 
@@ -116,6 +122,13 @@ public class BoardController {
     @DeleteMapping("/{boardIdx}")
     public BaseResponse<String> deleteBoard(@PathVariable int boardIdx){
         try {
+
+            int boardIdxByJwt = jwtService.getBoardIdx();
+
+            if(boardIdx != boardIdxByJwt){
+                return new BaseResponse<>(INVALID_BOARD_JWT);
+            }
+
             DeleteBoardReq deleteBoardReq = new DeleteBoardReq(boardIdx);
             boardService.deleteBoard(deleteBoardReq);
 
