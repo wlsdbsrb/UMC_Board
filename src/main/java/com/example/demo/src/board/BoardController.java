@@ -45,9 +45,8 @@ public class BoardController {
                 return new BaseResponse<>(getBoardRes);
             }
             List<GetBoardRes> getBoardRes = boardProvider.getBoardsByTitle(title);
-
             if(getBoardRes.isEmpty()){
-                throw new BaseException(RESPONSE_ERROR);
+                return new BaseResponse<>(RESULT_NULL_ERROR);
             }
             return new BaseResponse<>(getBoardRes);
         }
@@ -60,7 +59,13 @@ public class BoardController {
     public BaseResponse<GetBoardRes> getBoard(@PathVariable("boardIdx") int boardIdx) {
         // Get Users
         try{
+
+            if(boardProvider.checkBoard(boardIdx)!=1){
+                return new BaseResponse<>(NOT_EXIST_BOARD);
+            }
+
             GetBoardRes getBoardRes = boardProvider.getBoard(boardIdx);
+
             return new BaseResponse<>(getBoardRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
@@ -95,6 +100,10 @@ public class BoardController {
 
             PatchBoardReq patchBoardReq= new PatchBoardReq(boardIdx,getBoardRes.getContent());
             boardService.modifyContent(patchBoardReq);
+
+            if(patchBoardReq.getContent().length() == 0){
+                return new BaseResponse<>(POST_BOARD_EMPTY_CONTENT);
+            }
 
             String result="수정 성공";
             return new BaseResponse<>(result);

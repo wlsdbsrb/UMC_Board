@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.example.demo.config.BaseResponseStatus.RESULT_NULL_ERROR;
 
 @Service
 public class BoardProvider {
@@ -45,6 +46,14 @@ public class BoardProvider {
             GetBoardRes getBoardRes = boardDao.getBoard(boardIdx);
             return getBoardRes;
         } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkBoard(int boardIdx) throws BaseException{
+        try{
+            return boardDao.checkBoard(boardIdx);
+        } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }

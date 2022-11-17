@@ -63,10 +63,12 @@ public enum BaseResponseStatus {
     DELETE_FAIL_BOARD(false,4016,"게시글 삭제 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
 
-    // 5000 : 필요시 만들어서 쓰세요
+    // [GET]
+    RESULT_NULL_ERROR(false, 5001, "결과값을 찾을수없습니다."),
+    NOT_EXIST_BOARD(false, 5002, "존재하지 않는 게시글 입니다.");
     // 6000 : 필요시 만들어서 쓰세요
 
 

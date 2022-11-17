@@ -52,6 +52,14 @@ public class BoardDao {
                 getBoardParams);
     }
 
+    public int checkBoard(int boardIdx){
+        String checkBoardQuery = "select exists(select boardIdx from Board where boardIdx = ?)";
+        System.out.println("z");
+        return this.jdbcTemplate.queryForObject(checkBoardQuery,
+                int.class,
+                boardIdx);
+    }
+
     public int creatBoard(PostBoardReq postBoardReq){
         String createBoardQuery = "insert into Board (nickname, title, content) VALUES(?,?,?)";
         Object[] creatBoardParams = new Object[]{
