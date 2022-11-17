@@ -97,7 +97,7 @@ public class UserController {
                 List<GetUserRes> getUsersRes = userProvider.getUsers();
                 return new BaseResponse<>(getUsersRes);
             }
-            // query string인 nickname이 있을 경우, 조건을 만족하는 유저정보들을 불러온다.
+
             List<GetUserRes> getUsersRes = userProvider.getUsersByNickname(nickname);
             return new BaseResponse<>(getUsersRes);
         } catch (BaseException exception) {
@@ -138,17 +138,13 @@ public class UserController {
     @PatchMapping("/{userIdx}")
     public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user) {
         try {
-/**
-  *********** 해당 부분은 7주차 - JWT 수업 후 주석해체 해주세요!  ****************
+
             //jwt에서 idx 추출.
             int userIdxByJwt = jwtService.getUserIdx();
             //userIdx와 접근한 유저가 같은지 확인
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
-            //같다면 유저네임 변경
-  **************************************************************************
- */
             PatchUserReq patchUserReq = new PatchUserReq(userIdx, user.getNickname());
             userService.modifyUserName(patchUserReq);
 
