@@ -4,7 +4,6 @@ import com.example.demo.src.board.model.DeleteBoardReq;
 import com.example.demo.src.board.model.GetBoardRes;
 import com.example.demo.src.board.model.PatchBoardReq;
 import com.example.demo.src.board.model.PostBoardReq;
-import com.example.demo.src.user.model.PatchUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,26 +18,34 @@ public class BoardDao {
     @Autowired
     public void setDataSource(DataSource dataSource) {this.jdbcTemplate = new JdbcTemplate(dataSource); }
 
-    public List<GetBoardRes> getBoards(){
-        String getBoardsQuery = "select * from Board";
+    public List<GetBoardRes> getBoards(int paging){
+        String getBoardsQuery = "select * from Board order by createdAT desc limit ?,?;";
+        Object[] getBoardsParams = new Object[]{
+                (paging-1)*5,paging*5
+        };
         return this.jdbcTemplate.query(getBoardsQuery,
                 (rs,rowNum) -> new GetBoardRes(
                         rs.getInt("boardIdx"),
                         rs.getString("nickname"),
                         rs.getString("title"),
-                        rs.getString("content"))
-        );
+                        rs.getString("content"),
+                        rs.getDate("createdAt")),
+        getBoardsParams);
     }
-    public List<GetBoardRes> getBoardsByTitle(String title){
-        String getBoardsByTitleQuery = "select * from Board where title LIKE ?";
-        String getBoardsByTitleParams = title;
+    public List<GetBoardRes> getBoardsByTitle(String title, int paging){
+        String getBoardsByTitleQuery = "select * from Board where title LIKE ? order by createdAT desc limit ?, ?;";
+        Object[] getBoardsByTitleParams = new Object[]{
+                title,(paging-1)*5,paging*5
+        };
+
         return this.jdbcTemplate.query(getBoardsByTitleQuery,
                 (rs, rowNum) -> new GetBoardRes(
                         rs.getInt("boardIdx"),
                         rs.getString("nickname"),
                         rs.getString("title"),
-                        rs.getString("content")),
-                '%'+getBoardsByTitleParams+'%');
+                        rs.getString("content"),
+                        rs.getDate("createdAt")),
+                getBoardsByTitleParams);
     }
     public GetBoardRes getBoard(int boardIdx){
         String getBoardQuery = "select * from Board where boardIdx = ?";
@@ -48,7 +55,8 @@ public class BoardDao {
                         rs.getInt("boardIdx"),
                         rs.getString("nickname"),
                         rs.getString("title"),
-                        rs.getString("content")),
+                        rs.getString("content"),
+                        rs.getDate("createdAt")),
                 getBoardParams);
     }
 

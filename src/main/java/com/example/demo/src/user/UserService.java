@@ -53,7 +53,7 @@ public class UserService {
         }
         try {
             int userIdx = userDao.createUser(postUserReq);
-            String jwt = jwtService.userCreateJwt(userIdx);
+            String jwt = jwtService.userJwt(userIdx);
             return new PostUserRes(userIdx,jwt);
 
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.

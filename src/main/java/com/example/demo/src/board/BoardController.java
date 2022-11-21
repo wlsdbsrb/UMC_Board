@@ -37,14 +37,30 @@ public class BoardController {
 
     @ResponseBody
     @GetMapping("")
-    public BaseResponse<List<GetBoardRes>> getBoards(@RequestParam(required = false) String title){
+    public BaseResponse<List<GetBoardRes>> getBoards(@RequestParam(value = "paging", defaultValue = "1")int paging){
 
         try{
-            if(title == null){
-                List<GetBoardRes> getBoardRes = boardProvider.getBoards();
-                return new BaseResponse<>(getBoardRes);
+            List<GetBoardRes> getBoardRes = boardProvider.getBoards(paging);
+
+            if(getBoardRes.isEmpty()){
+                return new BaseResponse<>(RESULT_NULL_ERROR);
             }
-            List<GetBoardRes> getBoardRes = boardProvider.getBoardsByTitle(title);
+
+            return new BaseResponse<>(getBoardRes);
+        }
+
+        catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("title")
+    public BaseResponse<List<GetBoardRes>> getBoardsByTitle(@RequestParam String title, @RequestParam(value = "paging",defaultValue = "1")int paging){
+
+        try{
+
+            List<GetBoardRes> getBoardRes = boardProvider.getBoardsByTitle(title,paging);
             if(getBoardRes.isEmpty()){
                 return new BaseResponse<>(RESULT_NULL_ERROR);
             }
@@ -54,6 +70,8 @@ public class BoardController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+
     @ResponseBody
     @GetMapping("/{boardIdx}") //
     public BaseResponse<GetBoardRes> getBoard(@PathVariable("boardIdx") int boardIdx) {
@@ -98,10 +116,10 @@ public class BoardController {
     public BaseResponse<String> modifyContent(@PathVariable int boardIdx, @RequestBody GetBoardRes getBoardRes){
         try {
 
-            int boardIdxByJwt = jwtService.getBoardIdx();
+            int boardIdxByJwt = jwtService.getUserIdx();
 
             if(boardIdx != boardIdxByJwt){
-                return new BaseResponse<>(INVALID_BOARD_JWT);
+                return new BaseResponse<>(INVALID_USER_JWT);
             }
 
             PatchBoardReq patchBoardReq= new PatchBoardReq(boardIdx,getBoardRes.getContent());
@@ -123,10 +141,10 @@ public class BoardController {
     public BaseResponse<String> deleteBoard(@PathVariable int boardIdx){
         try {
 
-            int boardIdxByJwt = jwtService.getBoardIdx();
+            int boardIdxByJwt = jwtService.getUserIdx();
 
             if(boardIdx != boardIdxByJwt){
-                return new BaseResponse<>(INVALID_BOARD_JWT);
+                return new BaseResponse<>(INVALID_USER_JWT);
             }
 
             DeleteBoardReq deleteBoardReq = new DeleteBoardReq(boardIdx);

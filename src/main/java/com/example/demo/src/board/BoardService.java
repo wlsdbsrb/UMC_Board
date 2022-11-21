@@ -30,7 +30,7 @@ public class BoardService {
     public PostBoardRes createBoard(PostBoardReq postBoardReq) throws BaseException{
         try {
             int boardIdx = boardDao.creatBoard(postBoardReq);
-            String jwt = jwtService.boardCreateJwt(boardIdx);
+            String jwt = jwtService.userJwt(boardIdx);
             return new PostBoardRes(boardIdx,jwt);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

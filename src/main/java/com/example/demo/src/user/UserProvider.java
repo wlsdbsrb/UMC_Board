@@ -53,7 +53,7 @@ public class UserProvider {
 
         if (postLoginReq.getPassword().equals(password)) { //비말번호가 일치한다면 userIdx를 가져온다.
             int userIdx = userDao.getPwd(postLoginReq).getUserIdx();
-            String jwt = jwtService.userCreateJwt(userIdx);
+            String jwt = jwtService.userJwt(userIdx);
             return new PostLoginRes(userIdx,jwt);
 
 

@@ -23,17 +23,17 @@ public class BoardProvider {
     public BoardProvider(BoardDao boardDao) {
         this.boardDao = boardDao;
     }
-    public List<GetBoardRes> getBoards() throws BaseException {
+    public List<GetBoardRes> getBoards(int paging) throws BaseException {
         try {
-            List<GetBoardRes> getBoardRes = boardDao.getBoards();
+            List<GetBoardRes> getBoardRes = boardDao.getBoards(paging);
             return getBoardRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-    public List<GetBoardRes> getBoardsByTitle(String title) throws BaseException{
+    public List<GetBoardRes> getBoardsByTitle(String title, int paging) throws BaseException{
         try{
-            List<GetBoardRes> getBoardRes = boardDao.getBoardsByTitle(title);
+            List<GetBoardRes> getBoardRes = boardDao.getBoardsByTitle(title,paging);
             return getBoardRes;
         }
         catch (Exception exception) {
