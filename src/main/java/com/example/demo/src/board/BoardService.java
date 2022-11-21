@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -27,6 +28,7 @@ public class BoardService {
 
     }
 
+    @Transactional
     public PostBoardRes createBoard(PostBoardReq postBoardReq) throws BaseException{
         try {
             int boardIdx = boardDao.creatBoard(postBoardReq);
@@ -36,7 +38,7 @@ public class BoardService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional
     public void modifyContent(PatchBoardReq patchBoardReq) throws BaseException{
         try {
             int result = boardDao.modifyContent(patchBoardReq);
@@ -48,7 +50,7 @@ public class BoardService {
             throw  new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional
     public void deleteBoard(DeleteBoardReq deleteBoardReq) throws BaseException{
         try {
             int result = boardDao.deleteBoard(deleteBoardReq);

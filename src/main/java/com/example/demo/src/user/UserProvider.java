@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -40,6 +42,7 @@ public class UserProvider {
 
 
     // 로그인(password 검사)
+    @Transactional
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
         User user = userDao.getPwd(postLoginReq);
         String password;
@@ -63,6 +66,7 @@ public class UserProvider {
     }
 
     // 해당 이메일이 이미 User Table에 존재하는지 확인
+    @Transactional
     public int checkEmail(String email) throws BaseException {
         try {
             return userDao.checkEmail(email);
@@ -73,6 +77,7 @@ public class UserProvider {
 
 
     // User들의 정보를 조회
+    @Transactional
     public List<GetUserRes> getUsers() throws BaseException {
         try {
             List<GetUserRes> getUserRes = userDao.getUsers();
@@ -83,6 +88,7 @@ public class UserProvider {
     }
 
     // 해당 nickname을 갖는 User들의 정보 조회
+    @Transactional
     public List<GetUserRes> getUsersByNickname(String nickname) throws BaseException {
         try {
             List<GetUserRes> getUsersRes = userDao.getUsersByNickname(nickname);
@@ -94,6 +100,7 @@ public class UserProvider {
 
 
     // 해당 userIdx를 갖는 User의 정보 조회
+    @Transactional
     public GetUserRes getUser(int userIdx) throws BaseException {
         try {
             GetUserRes getUserRes = userDao.getUser(userIdx);

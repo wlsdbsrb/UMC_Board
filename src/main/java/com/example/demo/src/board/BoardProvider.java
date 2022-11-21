@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class BoardProvider {
     public BoardProvider(BoardDao boardDao) {
         this.boardDao = boardDao;
     }
+
+    @Transactional
     public List<GetBoardRes> getBoards(int paging) throws BaseException {
         try {
             List<GetBoardRes> getBoardRes = boardDao.getBoards(paging);
@@ -31,6 +34,7 @@ public class BoardProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    @Transactional
     public List<GetBoardRes> getBoardsByTitle(String title, int paging) throws BaseException{
         try{
             List<GetBoardRes> getBoardRes = boardDao.getBoardsByTitle(title,paging);
@@ -40,6 +44,7 @@ public class BoardProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    @Transactional
     public GetBoardRes getBoard(int boardIdx) throws BaseException {
         try {
             GetBoardRes getBoardRes = boardDao.getBoard(boardIdx);
@@ -48,7 +53,7 @@ public class BoardProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    @Transactional
     public int checkBoard(int boardIdx) throws BaseException{
         try{
             return boardDao.checkBoard(boardIdx);

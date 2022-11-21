@@ -137,7 +137,7 @@ public class BoardController {
 
     }
     @ResponseBody
-    @DeleteMapping("/{boardIdx}")
+    @PatchMapping("/{boardIdx}")
     public BaseResponse<String> deleteBoard(@PathVariable int boardIdx){
         try {
 
