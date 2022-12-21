@@ -32,8 +32,7 @@ public class BoardService {
     public PostBoardRes createBoard(PostBoardReq postBoardReq) throws BaseException{
         try {
             int boardIdx = boardDao.creatBoard(postBoardReq);
-            String jwt = jwtService.userJwt(boardIdx);
-            return new PostBoardRes(boardIdx,jwt);
+            return new PostBoardRes(boardIdx);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
@@ -42,6 +41,7 @@ public class BoardService {
     public void modifyContent(PatchBoardReq patchBoardReq) throws BaseException{
         try {
             int result = boardDao.modifyContent(patchBoardReq);
+            System.out.println(result);
             if(result==0){
                 throw new BaseException(MODIFY_FAIL_CONTENT);
             }

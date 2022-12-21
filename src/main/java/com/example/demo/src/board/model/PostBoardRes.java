@@ -9,5 +9,4 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostBoardRes {
     private int boardIdx;
-    private String jwt;
 }

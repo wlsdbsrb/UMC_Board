@@ -3,6 +3,7 @@ package com.example.demo.src.board;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.board.model.*;
+import com.example.demo.src.user.model.PostLoginReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,24 +113,23 @@ public class BoardController {
         }
     }
     @ResponseBody
-    @PatchMapping("/content/{boardIdx}")
-    public BaseResponse<String> modifyContent(@PathVariable int boardIdx, @RequestBody GetBoardRes getBoardRes){
+    @PatchMapping("/content/{userIdx}")
+    public BaseResponse<String> modifyContent(@RequestBody PatchBoardReq patchBoardReq,@PathVariable int userIdx){
         try {
 
-            int boardIdxByJwt = jwtService.getUserIdx();
+            int userIdxByJwt = jwtService.getUserIdx();
 
-            if(boardIdx != boardIdxByJwt){
+            if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            PatchBoardReq patchBoardReq= new PatchBoardReq(boardIdx,getBoardRes.getContent());
             boardService.modifyContent(patchBoardReq);
 
             if(patchBoardReq.getContent().length() == 0){
                 return new BaseResponse<>(POST_BOARD_EMPTY_CONTENT);
             }
-
             String result="수정 성공";
+
             return new BaseResponse<>(result);
         }catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
@@ -137,13 +137,13 @@ public class BoardController {
 
     }
     @ResponseBody
-    @PatchMapping("/{boardIdx}")
-    public BaseResponse<String> deleteBoard(@PathVariable int boardIdx){
+    @PatchMapping("/drop/{userIdx}/{boardIdx}")
+    public BaseResponse<String> deleteBoard(@PathVariable int boardIdx ,@PathVariable int userIdx){
         try {
 
-            int boardIdxByJwt = jwtService.getUserIdx();
+            int userIdxByJwt = jwtService.getUserIdx();
 
-            if(boardIdx != boardIdxByJwt){
+            if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
